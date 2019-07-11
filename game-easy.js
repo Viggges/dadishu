@@ -4,14 +4,19 @@ window.onload = function () {
     const scoreBoard = document.querySelector('.score');
     const moles = document.querySelectorAll('.mole');
     const startBtn = document.getElementById('start_btn');
+    const goldBoard = document.querySelector('.gold');
     let titleH1 = document.getElementById('title');
 
     let lastHole;
     let timeUp = false;
     let score = 0;
     let gameTime = 10000;
-
-
+    if (!localStorage.getItem('gold')) {
+        localStorage.setItem('gold', 1);
+    } else {
+        goldBoard.textContent = localStorage.getItem('gold');
+    }
+    var gold = localStorage.getItem('gold');
     startBtn.addEventListener('click', function () {
         showBtnAnimation();
         startGame();
@@ -36,7 +41,7 @@ window.onload = function () {
         setTimeout(() => {
             // TODO: 写当游戏时间结束后要发生的事
             timeUp = true;
-            titleH1.textContent="TIME UP!";
+            titleH1.textContent = "TIME UP!";
         }, gameTime)
     }
 
@@ -115,8 +120,11 @@ window.onload = function () {
         // TODO: 在这里写用户点击地鼠发生的事.
         if (!e.isTrusted) return;
         score++;
+        gold++;
+        localStorage.setItem('gold', gold);
         this.parentNode.classList.remove('up');
         scoreBoard.textContent = score;
+        goldBoard.textContent = gold;
     }));
 
 };
